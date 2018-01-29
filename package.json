@@ -1,0 +1,25 @@
+{
+  "name": "chaos-burst",
+  "version": "1.0.0",
+  "description": "software associated with chaos-burst as per nrmle 2.0",
+  "main": "app.js",
+  "repository" :
+  { "type" : "git"
+  , "url" : "https://github.com/robert-sjoblom/chaos-burst.git"
+  }
+  "dependencies": {
+    "mongodb": "^3.0.1"
+  },
+  "devDependencies": {
+    "mongodb": "^3.0.1"
+  },
+  "scripts": {
+    "test": "console.log(\"Hello World!\")"
+  },
+  "keywords": [
+    "rpg",
+    "osr"
+  ],
+  "author": "robert s.",
+  "license": "ISC"
+}
