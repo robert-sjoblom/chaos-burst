@@ -58,10 +58,3 @@ typings/
 .env
 
 # folders to ignore
-docs_utbildning/.vscode/
-docs_utbildning/
-.vscode/
-mapp/
-dist/
-docs/
-css/
