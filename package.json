@@ -3,18 +3,23 @@
   "version": "1.0.0",
   "description": "software associated with chaos-burst as per nrmle 2.0",
   "main": "app.js",
-  "repository" :
-  { "type" : "git"
-  , "url" : "https://github.com/robert-sjoblom/chaos-burst.git"
-  }
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/robert-sjoblom/chaos-burst.git"
+  },
   "dependencies": {
-    "mongodb": "^3.0.1"
   },
   "devDependencies": {
-    "mongodb": "^3.0.1"
+    "webpack": "^4.0.1",
+    "webpack-cli": "^2.0.10",
+    "webpack-dev-server": "^3.1.0",
+    "webpack-notifier": "^1.5.1"
   },
   "scripts": {
-    "test": "console.log(\"Hello World!\")"
+    "bundle": "webpack",
+    "copyindex": "cp index.html dist/index.html",
+    "build": "npm run bundle && npm run copyindex;",
+    "start:dev": "webpack-dev-server"
   },
   "keywords": [
     "rpg",
