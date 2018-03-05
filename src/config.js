@@ -6,13 +6,13 @@ const config = {
     storageBucket: "chaos-burst.appspot.com",
     messagingSenderId: "332063549155"
 };
-
+ 
 const ui = {
     effectDiv: $("#effect"),
     burstEffect: $("#eff"),
     prompt: $("#ask"),
     timeLength: $("#timeLength"),
-    timeDiv: $("#time")
+    timeContainer: $("#timeContainer")
 };
 
 export { config, ui };

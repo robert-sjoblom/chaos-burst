@@ -1,5 +1,6 @@
-import { config, ui } from "./config.js";
+import { config, ui } from "./config";
 import { storageAvailable } from "./storageAvailable";
+import { getRandomInt } from "./helpers";
 
 function App() {
     const tables = {
@@ -9,7 +10,8 @@ function App() {
     firebase.initializeApp(config); //eslint-disable-line
     const db = firebase.database(); //eslint-disable-line
     
-
+    getData(db, "/time", "timeResults");
+    getData(db, "/effect", "effectResults");
 }
 
 
@@ -21,8 +23,20 @@ function App() {
 //     }
 // }
 
+function updateHTML(location, tablesKey) {
+    const max = tables[tablesKey].length;
+    const choice = getRandomInt(max);
+    if (location === "/time") {
+        ui.timeLength.text = tables[tablesKey][choice].replace(/["]+/g, "");
+    } else if (location === "/effect") {
+        ui.burstEffect.text = tables[tablesKey][choice].replace(/["]+/g, "");
+    }
+}
+
 function getData(db, location, tablesKey) {
-    db.ref(location) // db.ref("/room2").on("child-added").then(here we update chat) db.ref("/time").off("child-added")
+    console.log("I was called: getData,");
+    console.log("with db: ", db, " loc: ", location, " tables: ", tablesKey)
+    db.ref(location)
         .once("value")
         .then(snapshot => {
             snapshot.forEach(x => {
@@ -30,21 +44,9 @@ function getData(db, location, tablesKey) {
                 tables[tablesKey].push(text);
             });
         })
-        .then(function () {
-            ui.length.text(
-                tables[tablesKey][getRandomInt(tables[tablesKey].length)]
-                    .toLowerCase()); //eslint-disable-line
-        })
-        .then(function () {
-            console.log("This happened!");
-        });
+        .then(updateHTML(location, tablesKey));
 }
 
-
-
-
-getData(db, "/time", "timeResults");
-getData(db, "/effect", "effectResults");
 
 // var userId = firebase.auth().currentUser.uid;
 // return firebase.database().ref('/users/' + userId).once('value').then(function(snapshot) {
@@ -65,6 +67,17 @@ $(document).on("click", ui.length, function () {
     ui.length.text(tables.timeResults[getRandomInt(100)].toLowerCase());
 });
 
+
+$("#time").hide();
+
+$("#ask").on("click", function () {
+    $("#time").show("fast");
+    $(this).hide();
+});
+
+
+
+
 // Let's not get confused.
 // db.ref("/effect").on("value", snapshot => {
 //     snapshot.forEach(x => {
@@ -77,10 +90,7 @@ $(document).on("click", ui.length, function () {
 //     $("#eff").text(tables.effectResults[getRandomInt(10000)].replace('"', "") + "."); //eslint-disable-line
 // });
 
-function getRandomInt(max) {
-    // up to but not including max
-    return Math.floor(Math.random() * Math.floor(max));
-}
+
 
 function shutDown() {
     if (tables.effectResults.length === 10000) {
@@ -88,9 +98,5 @@ function shutDown() {
     }
 }
 
-$("#time").hide();
 
-$("#ask").on("click", function () {
-    $("#time").show("fast");
-    $(this).hide();
-});
+App();
