@@ -8,6 +8,7 @@
     "url": "https://github.com/robert-sjoblom/chaos-burst.git"
   },
   "dependencies": {
+    "npm": "^5.7.1"
   },
   "devDependencies": {
     "webpack": "^4.0.1",
