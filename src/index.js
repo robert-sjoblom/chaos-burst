@@ -2,18 +2,20 @@ import { config, ui } from "./config";
 import { storageAvailable } from "./storageAvailable";
 import { getRandomInt } from "./helpers";
 
+const tables = {
+    timeResults: [],
+    effectResults: []
+};
+
+
 function App() {
-    const tables = {
-        timeResults: [],
-        effectResults: []
-    };
+
     firebase.initializeApp(config); //eslint-disable-line
     const db = firebase.database(); //eslint-disable-line
-    
-    getData(db, "/time", "timeResults");
-    getData(db, "/effect", "effectResults");
-}
 
+    getData(db, "/effect", "effectResults");
+    getData(db, "/time", "timeResults");
+}
 
 // function initPage(ui, storageBool, tables) {
 //     if (storageBool) {
@@ -26,16 +28,18 @@ function App() {
 function updateHTML(location, tablesKey) {
     const max = tables[tablesKey].length;
     const choice = getRandomInt(max);
-    if (location === "/time") {
-        ui.timeLength.text = tables[tablesKey][choice].replace(/["]+/g, "");
-    } else if (location === "/effect") {
-        ui.burstEffect.text = tables[tablesKey][choice].replace(/["]+/g, "");
+
+    switch(location) {
+    case "/time":
+        ui["timeLength"].text(tables[tablesKey][choice].replace(/["]+/g, ""));
+        break;
+    case "/effect":
+        ui["burstEffect"].text(tables[tablesKey][choice].replace(/["]+/g, ""));
+        break;
     }
 }
 
 function getData(db, location, tablesKey) {
-    console.log("I was called: getData,");
-    console.log("with db: ", db, " loc: ", location, " tables: ", tablesKey)
     db.ref(location)
         .once("value")
         .then(snapshot => {
@@ -44,7 +48,7 @@ function getData(db, location, tablesKey) {
                 tables[tablesKey].push(text);
             });
         })
-        .then(updateHTML(location, tablesKey));
+        .then(() => updateHTML(location, tablesKey));
 }
 
 
@@ -63,9 +67,9 @@ function getData(db, location, tablesKey) {
 //     ui.length.text(tables.timeResults[getRandomInt(100)].toLowerCase()); //eslint-disable-line
 // });
 
-$(document).on("click", ui.length, function () { 
-    ui.length.text(tables.timeResults[getRandomInt(100)].toLowerCase());
-});
+// $(document).on("click", ui.length, function () { 
+//     ui.length.text(tables.timeResults[getRandomInt(100)].toLowerCase());
+// });
 
 
 $("#time").hide();
